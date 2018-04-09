@@ -1,11 +1,38 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { TabNavigator, StackNavigator } from 'react-navigation';
 
-export default class App extends React.Component {
+import AuthScreen from './screens/AuthScreen';
+import WelcomeScreen from './screens/WelcomeScreen';
+import MapScreen from './screens/MapScreen';
+import DeckScreen from './screens/DeckScreen';
+import ReviewScreen from './screens/ReviewScreen';
+import SettingsScreen from './screens/SettingsScreen';
+
+
+
+class App extends React.Component {
   render() {
+    const MainNavigator  = TabNavigator({
+        welcome: { screen: WelcomeScreen },
+        auth: { screen: AuthScreen },
+        main:{
+          screen: TabNavigator({
+              map: { screen: MapScreen },
+              deck: { screen: DeckScreen },
+              review: {
+                screen: StackNavigator({
+                    review: { screen: ReviewScreen },
+                    settings: { screen: SettingsScreen }
+                })
+              }
+          })
+        }
+    });
+
     return (
       <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
+        <MainNavigator />
       </View>
     );
   }
@@ -19,3 +46,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+export default App;
+//Expo.registerRootComponent(App);
+
+
